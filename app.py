@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Konfigurasi Halaman
 st.set_page_config(
-    page_title="SOBAT NESTAND - Kotak Lapor Rahasia",
+    page_title="SAHABAT NESTAND - Kotak Lapor Rahasia",
     page_icon="🛡️",
     layout="centered"
 )
