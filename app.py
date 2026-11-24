@@ -186,7 +186,7 @@ with st.form("form_laporan", clear_on_submit=True):
         placeholder="Kosongkan jika ingin tetap rahasia"
     )
 
-    submit = st.form_submit_button("📨 KIRIM/SUBMITE LAPORAN RAHASIA SEKARANG")
+    submit = st.form_submit_button("📨 KIRIM/SUBMIT LAPORAN RAHASIA SEKARANG")
 
 # Proses Kirim ke Telegram
 if submit:
