@@ -23,13 +23,11 @@ def get_image_base64(keywords):
 bg_base64 = get_image_base64(["wallpaper", "bg", "latar"])
 logo_base64 = get_image_base64(["logo"])
 
-# Gaya Tampilan (CSS) dengan Wallpaper Sekolah + Efek Kaca Elegan
-bg_css = ""
+# Gaya Tampilan (CSS) dengan Wallpaper Sekolah Bening Tanpa Overlay Gelap
 if bg_base64:
     bg_css = f"""
     [data-testid="stAppViewContainer"] {{
-        background-image: linear-gradient(rgba(10, 25, 50, 0.72), rgba(10, 25, 50, 0.78)),
-                          url("data:image/jpeg;base64,{bg_base64}");
+        background-image: url("data:image/jpeg;base64,{bg_base64}");
         background-size: cover;
         background-position: center;
         background-attachment: fixed;
@@ -53,51 +51,60 @@ st.markdown(f"""
     /* Kartu Header Atas */
     .header-box {{
         text-align: center;
-        padding: 10px 15px 20px 15px;
+        max-width: 560px;
+        margin: 0 auto 12px auto;
+        padding: 14px 18px 18px 18px;
         color: #ffffff;
+        background: rgba(13, 40, 80, 0.38);
+        border-radius: 16px;
+        backdrop-filter: blur(2px);
     }}
     .header-box img {{
-        width: 110px;
+        width: 105px;
         height: auto;
-        margin-bottom: 12px;
+        margin-bottom: 10px;
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
-        background: rgba(255, 255, 255, 0.92);
+        background: rgba(255, 255, 255, 0.95);
         padding: 6px;
     }}
     .header-title {{
-        font-size: 2.1rem;
+        font-size: 2rem;
         font-weight: 800;
         letter-spacing: 1px;
         margin: 0;
         color: #ffffff;
-        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+        text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
     }}
     .header-sub {{
-        font-size: 1rem;
-        color: #e3f2fd;
+        font-size: 0.96rem;
+        color: #ffffff;
         margin-top: 6px;
-        font-weight: 500;
+        font-weight: 600;
+        text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
     }}
     .badge-aman {{
         display: inline-block;
-        background: rgba(25, 118, 210, 0.85);
-        border: 1px solid rgba(255, 255, 255, 0.35);
+        background: rgba(13, 71, 161, 0.92);
+        border: 1px solid rgba(255, 255, 255, 0.5);
         color: #ffffff;
-        padding: 6px 16px;
+        padding: 5px 15px;
         border-radius: 50px;
-        font-size: 0.85rem;
-        margin-top: 12px;
+        font-size: 0.82rem;
+        margin-top: 10px;
         font-weight: 600;
+        box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
     }}
 
-    /* Kartu Formulir Putih Bersih */
+    /* Kartu Formulir Elegan & Cukupannya Pas */
     [data-testid="stForm"] {{
-        background: rgba(255, 255, 255, 0.95);
-        padding: 28px 26px;
-        border-radius: 18px;
-        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
-        border: 1px solid rgba(255, 255, 255, 0.6);
+        max-width: 560px;
+        margin: 0 auto;
+        background: rgba(255, 255, 255, 0.94);
+        padding: 20px 22px;
+        border-radius: 16px;
+        box-shadow: 0 10px 28px rgba(0, 0, 0, 0.28);
+        border: 1px solid rgba(255, 255, 255, 0.75);
     }}
 
     /* Pastikan tulisan label di dalam formulir selalu gelap & jelas terbaca */
@@ -106,6 +113,11 @@ st.markdown(f"""
     [data-testid="stForm"] h3 {{
         color: #1a237e !important;
         font-weight: 600;
+        font-size: 0.92rem;
+    }}
+    [data-testid="stForm"] h3 {{
+        font-size: 1.15rem !important;
+        margin-bottom: 8px !important;
     }}
 
     /* Tombol Kirim */
@@ -113,13 +125,16 @@ st.markdown(f"""
         background: linear-gradient(90deg, #0d47a1, #1976d2);
         color: #ffffff !important;
         font-weight: 700;
-        font-size: 1rem;
+        font-size: 0.92rem;
         border: none;
-        border-radius: 12px;
-        padding: 0.7rem 1.2rem;
+        border-radius: 10px;
+        padding: 0.6rem 1rem;
         width: 100%;
-        box-shadow: 0 4px 14px rgba(13, 71, 161, 0.4);
+        box-shadow: 0 4px 12px rgba(13, 71, 161, 0.35);
         transition: all 0.2s ease;
+    }}
+    div.stFormSubmitButton > button * {{
+        color: #ffffff !important;
     }}
     div.stFormSubmitButton > button:hover {{
         background: linear-gradient(90deg, #1565c0, #1e88e5);
@@ -128,10 +143,18 @@ st.markdown(f"""
 
     .footer-note {{
         text-align: center;
-        color: #e3f2fd;
-        font-size: 0.82rem;
-        margin-top: 18px;
-        text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+        color: #ffffff;
+        font-size: 0.8rem;
+        margin-top: 12px;
+        padding: 6px 14px;
+        display: inline-block;
+        background: rgba(13, 40, 80, 0.45);
+        border-radius: 10px;
+        text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
+    }}
+    .footer-wrap {{
+        text-align: center;
+        margin-top: 10px;
     }}
 </style>
 """, unsafe_allow_html=True)
@@ -177,7 +200,7 @@ with st.form("form_laporan", clear_on_submit=True):
 
     detail = st.text_area(
         "Ceritakan Detail Informasi / Kronologi *",
-        height=140,
+        height=110,
         placeholder="Tuliskan apa yang terjadi dengan jelas. Kamu aman bercerita di sini..."
     )
 
@@ -229,9 +252,10 @@ if submit:
             st.error(f"❌ Terjadi kendala sistem saat mengirim laporan: {e}")
 
 st.markdown("""
-<div class="footer-note">
-    © Wei_ch Sobat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Murid
-<div class="footer-note">
-    Copyright : @wei_ch
+<div class="footer-wrap">
+    <div class="footer-note">
+        © Wei_ch Sobat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Murid<br>
+        Copyright : @wei_ch
+    </div>
 </div>
 """, unsafe_allow_html=True)
