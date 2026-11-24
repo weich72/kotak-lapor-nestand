@@ -117,7 +117,8 @@ st.markdown(f"""
     }}
     [data-testid="stForm"] h3 {{
         font-size: 1.15rem !important;
-        margin-bottom: 8px !important;
+        margin-bottom: 12px !important;
+        text-align: center !important;
     }}
 
     /* Tombol Kirim */
@@ -130,11 +131,16 @@ st.markdown(f"""
         border-radius: 10px;
         padding: 0.6rem 1rem;
         width: 100%;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        text-align: center !important;
         box-shadow: 0 4px 12px rgba(13, 71, 161, 0.35);
         transition: all 0.2s ease;
     }}
     div.stFormSubmitButton > button * {{
         color: #ffffff !important;
+        text-align: center !important;
     }}
     div.stFormSubmitButton > button:hover {{
         background: linear-gradient(90deg, #1565c0, #1e88e5);
