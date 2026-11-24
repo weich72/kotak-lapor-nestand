@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Konfigurasi Halaman
 st.set_page_config(
-    page_title="SAHABAT NESTAND - Kotak Lapor Rahasia",
+    page_title="SOBAT NESTAND - Kotak Lapor Rahasia",
     page_icon="🛡️",
     layout="centered"
 )
@@ -48,21 +48,23 @@ st.markdown(f"""
         background: rgba(0, 0, 0, 0);
     }}
 
-    /* Tulisan Share & ikon pojok kanan atas jadi gelap tegas + kapsul tipis */
-    [data-testid="stToolbar"] {{
-        background: rgba(255, 255, 255, 0.85);
+    /* Tulisan Share & SEMUA ikon (bintang, pensil, GitHub, titik tiga) jadi gelap tegas */
+    [data-testid="stToolbar"],
+    [data-testid="stAppToolbar"] {{
+        background: rgba(255, 255, 255, 0.88) !important;
         backdrop-filter: blur(4px);
-        padding: 4px 10px;
-        border-radius: 20px;
-        margin-top: 6px;
-        margin-right: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        padding: 4px 12px !important;
+        border-radius: 20px !important;
+        margin-top: 6px !important;
+        margin-right: 8px !important;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
     }}
-    [data-testid="stToolbar"] button,
-    [data-testid="stToolbar"] span,
-    [data-testid="stToolbar"] svg {{
+    [data-testid="stToolbar"] *,
+    [data-testid="stAppToolbar"] * {{
         color: #0d2850 !important;
         fill: #0d2850 !important;
+        stroke: #0d2850 !important;
+        opacity: 1 !important;
         font-weight: 700 !important;
     }}
 
@@ -198,7 +200,7 @@ logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 T
 st.markdown(f"""
 <div class="header-box">
     {logo_html}
-    <div class="header-title">SAHABAT NESTAND</div>
+    <div class="header-title">SOBAT NESTAND</div>
     <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
     <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
 </div>
