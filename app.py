@@ -1,141 +1,235 @@
 import streamlit as st
 import requests
-from datetime import datetime, timezone, timedelta
+import base64
+import os
+from datetime import datetime, timedelta
 
-# Pengaturan Halaman
+# Konfigurasi Halaman
 st.set_page_config(
-    page_title="Kotak Lapor Rahasia - Sahabat Nestand",
+    page_title="SAHABAT NESTAND - Kotak Lapor Rahasia",
     page_icon="🛡️",
     layout="centered"
 )
 
-# Desain Tampilan Ramah HP & Tombol Besar
-st.markdown("""
-    <style>
-    .main {background-color: #f4f7f6;}
-    .stButton>button {
-        width: 100%;
-        height: 3.5em;
-        font-size: 18px;
-        font-weight: bold;
-        border-radius: 12px;
-        background-color: #1e88e5;
-        color: white;
-        border: none;
+# Fungsi membaca gambar lokal menjadi Base64 agar bisa jadi background & logo
+def get_image_base64(keywords):
+    for filename in os.listdir("."):
+        lower_name = filename.lower()
+        if any(k in lower_name for k in keywords) and lower_name.endswith((".jpg", ".jpeg", ".png")):
+            with open(filename, "rb") as f:
+                return base64.b64encode(f.read()).decode()
+    return None
+
+bg_base64 = get_image_base64(["wallpaper", "bg", "latar"])
+logo_base64 = get_image_base64(["logo"])
+
+# Gaya Tampilan (CSS) dengan Wallpaper Sekolah + Efek Kaca Elegan
+bg_css = ""
+if bg_base64:
+    bg_css = f"""
+    [data-testid="stAppViewContainer"] {{
+        background-image: linear-gradient(rgba(10, 25, 50, 0.72), rgba(10, 25, 50, 0.78)),
+                          url("data:image/jpeg;base64,{bg_base64}");
+        background-size: cover;
+        background-position: center;
+        background-attachment: fixed;
+    }}
+    """
+else:
+    bg_css = """
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, #0d47a1 0%, #1565c0 100%);
     }
-    .stButton>button:hover {
-        background-color: #1565c0;
-        color: white;
-    }
-    .banner-box {
-        background: linear-gradient(135deg, #0d47a1, #1976d2);
-        padding: 20px;
-        border-radius: 15px;
-        color: white;
+    """
+
+st.markdown(f"""
+<style>
+    {bg_css}
+
+    [data-testid="stHeader"] {{
+        background: rgba(0, 0, 0, 0);
+    }}
+
+    /* Kartu Header Atas */
+    .header-box {{
         text-align: center;
-        margin-bottom: 20px;
-    }
-    </style>
+        padding: 10px 15px 20px 15px;
+        color: #ffffff;
+    }}
+    .header-box img {{
+        width: 110px;
+        height: auto;
+        margin-bottom: 12px;
+        border-radius: 14px;
+        box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
+        background: rgba(255, 255, 255, 0.92);
+        padding: 6px;
+    }}
+    .header-title {{
+        font-size: 2.1rem;
+        font-weight: 800;
+        letter-spacing: 1px;
+        margin: 0;
+        color: #ffffff;
+        text-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+    }}
+    .header-sub {{
+        font-size: 1rem;
+        color: #e3f2fd;
+        margin-top: 6px;
+        font-weight: 500;
+    }}
+    .badge-aman {{
+        display: inline-block;
+        background: rgba(25, 118, 210, 0.85);
+        border: 1px solid rgba(255, 255, 255, 0.35);
+        color: #ffffff;
+        padding: 6px 16px;
+        border-radius: 50px;
+        font-size: 0.85rem;
+        margin-top: 12px;
+        font-weight: 600;
+    }}
+
+    /* Kartu Formulir Putih Bersih */
+    [data-testid="stForm"] {{
+        background: rgba(255, 255, 255, 0.95);
+        padding: 28px 26px;
+        border-radius: 18px;
+        box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+        border: 1px solid rgba(255, 255, 255, 0.6);
+    }}
+
+    /* Pastikan tulisan label di dalam formulir selalu gelap & jelas terbaca */
+    [data-testid="stForm"] label,
+    [data-testid="stForm"] p,
+    [data-testid="stForm"] h3 {{
+        color: #1a237e !important;
+        font-weight: 600;
+    }}
+
+    /* Tombol Kirim */
+    div.stFormSubmitButton > button {{
+        background: linear-gradient(90deg, #0d47a1, #1976d2);
+        color: #ffffff !important;
+        font-weight: 700;
+        font-size: 1rem;
+        border: none;
+        border-radius: 12px;
+        padding: 0.7rem 1.2rem;
+        width: 100%;
+        box-shadow: 0 4px 14px rgba(13, 71, 161, 0.4);
+        transition: all 0.2s ease;
+    }}
+    div.stFormSubmitButton > button:hover {{
+        background: linear-gradient(90deg, #1565c0, #1e88e5);
+        transform: translateY(-1px);
+    }}
+
+    .footer-note {{
+        text-align: center;
+        color: #e3f2fd;
+        font-size: 0.82rem;
+        margin-top: 18px;
+        text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+    }}
+</style>
 """, unsafe_allow_html=True)
 
-# Header Aplikasi
-st.markdown("""
-    <div class="banner-box">
-        <h2>🛡️ SAHABAT NESTAND</h2>
-        <p style="margin:0; font-size:15px;">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></p>
-    </div>
+# Tampilan Header + Logo Sekolah
+logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 Tanjungmedar">' if logo_base64 else '<div style="font-size:3rem;">🛡️</div>'
+
+st.markdown(f"""
+<div class="header-box">
+    {logo_html}
+    <h1 class="header-title">SAHABAT NESTAND</h1>
+    <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
+    <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
+</div>
 """, unsafe_allow_html=True)
-
-st.info("🔒 **Identitasmu 100% Rahasia.** Aplikasi ini tidak mencatat nama, nomor HP, atau akunmu. Laporan langsung diterima oleh Guru Pembina/BK untuk menjaga keselamatan kita bersama.")
-
-# Fungsi Kirim ke Telegram
-def kirim_telegram(pesan):
-    try:
-        token = st.secrets["TELEGRAM_TOKEN"]
-        chat_id = st.secrets["TELEGRAM_CHAT_ID"]
-        url = f"https://api.telegram.org/bot{token}/sendMessage"
-        payload = {
-            "chat_id": chat_id,
-            "text": pesan,
-            "parse_mode": "HTML"
-        }
-        response = requests.post(url, json=payload, timeout=10)
-        return response.status_code == 200
-    except Exception as e:
-        return False
 
 # Formulir Laporan
-with st.form("form_lapor", clear_on_submit=True):
-    st.subheader("1. Pilih Jenis Kejadian / Bahaya")
+with st.form("form_laporan", clear_on_submit=True):
+    st.markdown("### 📝 Formulir Pengaduan / Curhat Aman")
+
     kategori = st.selectbox(
-        "Apa yang ingin kamu laporkan?",
+        "Kategori Kejadian",
         [
-            "🚨 Rencana Tawuran / Bentrokan Pelajar",
-            "🔪 Info Siswa Membawa Senjata Tajam (Sajam)",
-            "📱 Provokasi Geng / Ajakan Tawuran di Medsos",
-            "😢 Perundungan (Bullying) / Pemalakan / Ancaman",
-            "🚬 Penyalahgunaan Rokok / Miras / Obat Terlarang",
-            "💡 Saran & Curhat Keamanan Sekolah Lainnya"
+            "Perundungan / Bullying",
+            "Kekerasan / Ancaman / Pemalakan",
+            "Kenakalan / Bahaya di Lingkungan Sekolah",
+            "Curhat / Konseling Pribadi (BK)",
+            "Saran & Masukan Keamanan Sekolah",
+            "Lainnya"
         ]
     )
 
-    st.subheader("2. Tingkat Mendesak")
     urgensi = st.radio(
-        "Seberapa mendesak kejadian ini?",
-        ["🟢 Info Awal / Pencegahan", "🟡 Perlu Segera Dicek", "🔴 DARURAT (Sedang / Akan Terjadi Hari Ini!)"],
-        horizontal=False
+        "Tingkat Urgensi",
+        ["🟢 Normal", "🟡 Penting (Perlu Segera Dicek)", "🔴 Darurat (Butuh Penanganan Cepat)"],
+        horizontal=True
     )
 
-    st.subheader("3. Ceritakan Singkat & Jelas")
     lokasi = st.text_input(
-        "Lokasi / Tempat Kejadian (Opsional)",
-        placeholder="Contoh: Dekat pertigaan kebun, gerbang belakang, atau grup WA/IG..."
+        "Lokasi Kejadian (Opsional)",
+        placeholder="Contoh: Lapangan, belakang kelas 8B, kantin, grup WA..."
     )
 
     detail = st.text_area(
-        "Detail Informasi (Wajib diisi)",
-        height=130,
-        placeholder="Ceritakan apa yang kamu ketahui (waktu kejadian, ciri-ciri, nama akun medsos provokator, atau kronologi singkat)..."
+        "Ceritakan Detail Informasi / Kronologi *",
+        height=140,
+        placeholder="Tuliskan apa yang terjadi dengan jelas. Kamu aman bercerita di sini..."
     )
 
     identitas = st.text_input(
-        "Nama / Kelas (Boleh dikosongkan agar tetap Anonim)",
-        placeholder="Kosongkan saja jika ingin 100% rahasia..."
+        "Nama / Kelas Pelapor (Boleh Dikosongkan agar 100% Anonim)",
+        placeholder="Kosongkan jika ingin tetap rahasia"
     )
 
-    kirim = st.form_submit_button("📨 KIRIM LAPORAN RAHASIA SEKARANG")
+    submit = st.form_submit_button("📨 KIRIM LAPORAN RAHASIA SEKARANG")
 
-    if kirim:
-        if not detail.strip():
-            st.warning("⚠️ Mohon isi bagian **Detail Informasi** terlebih dahulu agar Bapak/Ibu Guru bisa menindaklanjuti.")
-        else:
-            # Waktu WIB (UTC+7)
-            wib = timezone(timedelta(hours=7))
-            waktu_sekarang = datetime.now(wib).strftime("%d-%m-%Y %H:%M WIB")
-            pengirim = identitas.strip() if identitas.strip() else "Anonim (Dirahasiakan)"
-            lokasi_info = lokasi.strip() if lokasi.strip() else "Tidak disebutkan"
+# Proses Kirim ke Telegram
+if submit:
+    if not detail.strip():
+        st.warning("⚠️ Mohon tuliskan detail informasi/kejadian terlebih dahulu sebelum mengirim.")
+    else:
+        try:
+            token = st.secrets["TELEGRAM_TOKEN"]
+            chat_id = st.secrets["TELEGRAM_CHAT_ID"]
 
-            pesan_tg = (
-                f"🛡️ <b>LAPORAN BARU - SAHABAT NESTAND</b>\n"
+            waktu_wib = (datetime.utcnow() + timedelta(hours=7)).strftime("%d-%m-%Y %H:%M WIB")
+            pelapor_txt = identitas.strip() if identitas.strip() else "Anonim (Dirahasiakan)"
+            lokasi_txt = lokasi.strip() if lokasi.strip() else "Tidak disebutkan"
+
+            pesan = (
+                f"🛡️ *LAPORAN BARU - SAHABAT NESTAND*\n"
                 f"━━━━━━━━━━━━━━━━━━━━\n"
-                f"🕒 <b>Waktu:</b> {waktu_sekarang}\n"
-                f"📌 <b>Kategori:</b> {kategori}\n"
-                f"⚠️ <b>Status:</b> {urgensi}\n"
-                f"📍 <b>Lokasi:</b> {lokasi_info}\n"
-                f"👤 <b>Pelapor:</b> {pengirim}\n"
+                f"🕒 *Waktu:* {waktu_wib}\n"
+                f"📂 *Kategori:* {kategori}\n"
+                f"🚨 *Urgensi:* {urgensi}\n"
+                f"📍 *Lokasi:* {lokasi_txt}\n"
+                f"👤 *Pelapor:* {pelapor_txt}\n"
                 f"━━━━━━━━━━━━━━━━━━━━\n"
-                f"📝 <b>Isi Laporan:</b>\n{detail.strip()}\n"
-                f"━━━━━━━━━━━━━━━━━━━━\n"
-                f"<i>Segera tindak lanjuti secara bijak & rahasia.</i>"
+                f"📝 *Detail Informasi:*\n{detail.strip()}"
             )
 
-            with st.spinner("Mengirim laporan rahasia ke Guru Pembina..."):
-                sukses = kirim_telegram(pesan_tg)
+            url_api = f"https://api.telegram.org/bot{token}/sendMessage"
+            resp = requests.post(
+                url_api,
+                data={"chat_id": chat_id, "text": pesan, "parse_mode": "Markdown"},
+                timeout=15
+            )
 
-            if sukses:
-                st.success("✅ **Laporan berhasil terkirim dengan aman!** Terima kasih sudah berani peduli menjaga keselamatan teman-teman dan sekolah kita.")
+            if resp.status_code == 200:
                 st.balloons()
+                st.success("✅ Laporan berhasil terkirim dengan aman! Terima kasih sudah berani peduli.")
             else:
-                st.error("❌ Gagal mengirim laporan. Pastikan koneksi internet aktif atau hubungi admin sekolah.")
+                st.error(f"❌ Gagal mengirim laporan (Kode: {resp.status_code}). Coba lagi beberapa saat.")
+        except Exception as e:
+            st.error(f"❌ Terjadi kendala sistem saat mengirim laporan: {e}")
 
-st.caption("© 2026 Sahabat Nestand - SMPN 1 Tanjungmedar | Sistem Pencegahan Dini & Perlindungan Siswa")
+st.markdown("""
+<div class="footer-note">
+    © Sahabat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Siswa
+</div>
+""", unsafe_allow_html=True)
