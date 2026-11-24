@@ -48,6 +48,24 @@ st.markdown(f"""
         background: rgba(0, 0, 0, 0);
     }}
 
+    /* Tulisan Share & ikon pojok kanan atas jadi gelap tegas + kapsul tipis */
+    [data-testid="stToolbar"] {{
+        background: rgba(255, 255, 255, 0.85);
+        backdrop-filter: blur(4px);
+        padding: 4px 10px;
+        border-radius: 20px;
+        margin-top: 6px;
+        margin-right: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }}
+    [data-testid="stToolbar"] button,
+    [data-testid="stToolbar"] span,
+    [data-testid="stToolbar"] svg {{
+        color: #0d2850 !important;
+        fill: #0d2850 !important;
+        font-weight: 700 !important;
+    }}
+
     /* Kartu Header Atas */
     .header-box {{
         text-align: center;
@@ -62,24 +80,33 @@ st.markdown(f"""
     .header-box img {{
         width: 105px;
         height: auto;
-        margin-bottom: 10px;
+        margin: 0 auto 10px auto;
+        display: block;
         border-radius: 14px;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.35);
         background: rgba(255, 255, 255, 0.95);
         padding: 6px;
     }}
     .header-title {{
+        display: block;
+        width: 100%;
+        text-align: center !important;
         font-size: 2rem;
         font-weight: 800;
         letter-spacing: 1px;
-        margin: 0;
+        margin: 0 auto !important;
+        padding: 0 !important;
         color: #ffffff;
         text-shadow: 0 2px 12px rgba(0, 0, 0, 0.75);
     }}
     .header-sub {{
+        display: block;
+        width: 100%;
+        text-align: center !important;
         font-size: 0.96rem;
         color: #ffffff;
-        margin-top: 6px;
+        margin: 6px auto 0 auto !important;
+        padding: 0 !important;
         font-weight: 600;
         text-shadow: 0 2px 8px rgba(0, 0, 0, 0.75);
     }}
@@ -171,7 +198,7 @@ logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 T
 st.markdown(f"""
 <div class="header-box">
     {logo_html}
-    <h1 class="header-title">SAHABAT NESTAND</h1>
+    <div class="header-title">SOBAT NESTAND</div>
     <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
     <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
 </div>
