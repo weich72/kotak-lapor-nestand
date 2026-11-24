@@ -171,7 +171,7 @@ logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 T
 st.markdown(f"""
 <div class="header-box">
     {logo_html}
-    <h1 class="header-title">SOBAT NESTAND</h1>
+    <h1 class="header-title">SAHABAT NESTAND</h1>
     <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
     <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
 </div>
