@@ -6,7 +6,7 @@ from datetime import datetime, timedelta
 
 # Konfigurasi Halaman
 st.set_page_config(
-    page_title="SAHABAT NESTAND - Kotak Lapor Rahasia",
+    page_title="SOBAT NESTAND - Kotak Lapor Rahasia",
     page_icon="🛡️",
     layout="centered"
 )
@@ -142,7 +142,7 @@ logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 T
 st.markdown(f"""
 <div class="header-box">
     {logo_html}
-    <h1 class="header-title">SAHABAT NESTAND</h1>
+    <h1 class="header-title">SOBAT NESTAND</h1>
     <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
     <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
 </div>
@@ -186,7 +186,7 @@ with st.form("form_laporan", clear_on_submit=True):
         placeholder="Kosongkan jika ingin tetap rahasia"
     )
 
-    submit = st.form_submit_button("📨 KIRIM LAPORAN RAHASIA SEKARANG")
+    submit = st.form_submit_button("📨 KIRIM/SUBMITE LAPORAN RAHASIA SEKARANG")
 
 # Proses Kirim ke Telegram
 if submit:
@@ -202,7 +202,7 @@ if submit:
             lokasi_txt = lokasi.strip() if lokasi.strip() else "Tidak disebutkan"
 
             pesan = (
-                f"🛡️ *LAPORAN BARU - SAHABAT NESTAND*\n"
+                f"🛡️ *LAPORAN BARU - SOBAT NESTAND*\n"
                 f"━━━━━━━━━━━━━━━━━━━━\n"
                 f"🕒 *Waktu:* {waktu_wib}\n"
                 f"📂 *Kategori:* {kategori}\n"
@@ -230,6 +230,6 @@ if submit:
 
 st.markdown("""
 <div class="footer-note">
-    © Sahabat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Siswa
+    © Sobat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Siswa
 </div>
 """, unsafe_allow_html=True)
