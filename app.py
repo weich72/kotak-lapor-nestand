@@ -230,7 +230,8 @@ if submit:
 
 st.markdown("""
 <div class="footer-note">
-    © wei_ch Sobat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Siswa
+    © Wei_ch Sobat Nestand • SMPN 1 Tanjungmedar • Ruang Aman untuk Semua Murid
+<div class="footer-note">
     Copyright : @wei_ch
 </div>
 """, unsafe_allow_html=True)
