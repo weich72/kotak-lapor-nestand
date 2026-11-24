@@ -44,28 +44,14 @@ st.markdown(f"""
 <style>
     {bg_css}
 
-    [data-testid="stHeader"] {{
-        background: rgba(0, 0, 0, 0);
-    }}
-
-    /* Tulisan Share & SEMUA ikon (bintang, pensil, GitHub, titik tiga) jadi gelap tegas */
+    /* Sembunyikan total header & toolbar bawaan Streamlit (Share, GitHub, dll) agar bersih & aman */
+    [data-testid="stHeader"],
     [data-testid="stToolbar"],
-    [data-testid="stAppToolbar"] {{
-        background: rgba(255, 255, 255, 0.88) !important;
-        backdrop-filter: blur(4px);
-        padding: 4px 12px !important;
-        border-radius: 20px !important;
-        margin-top: 6px !important;
-        margin-right: 8px !important;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.22);
-    }}
-    [data-testid="stToolbar"] *,
-    [data-testid="stAppToolbar"] * {{
-        color: #0d2850 !important;
-        fill: #0d2850 !important;
-        stroke: #0d2850 !important;
-        opacity: 1 !important;
-        font-weight: 700 !important;
+    [data-testid="stAppToolbar"],
+    #MainMenu,
+    header {{
+        display: none !important;
+        visibility: hidden !important;
     }}
 
     /* Kartu Header Atas */
@@ -200,7 +186,7 @@ logo_html = f'<img src="data:image/jpeg;base64,{logo_base64}" alt="Logo SMPN 1 T
 st.markdown(f"""
 <div class="header-box">
     {logo_html}
-    <div class="header-title">SAHABAT NESTAND</div>
+    <div class="header-title">SOBAT NESTAND</div>
     <div class="header-sub">Kotak Lapor Rahasia & Peduli Keamanan Sekolah<br><b>SMPN 1 Tanjungmedar</b></div>
     <div class="badge-aman">🔒 Identitas Pelapor 100% Dirahasiakan</div>
 </div>
